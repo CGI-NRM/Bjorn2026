@@ -48,7 +48,7 @@ DNA$Streckkod <- gsub(",", "", DNA$Streckkod) # in case there are accidental com
 # Reads samples registered in rovbase eg this file should be fetched
 # from rovbase daily.
 bear <- read_excel("Data/rovbasedata.xlsx")
-bear <- bear[bear$Prøvetype != "Vävnad", ]
+bear <- bear[bear$Prøvetype == "Spillning", ] # Only keep "Spillning"
 colnames(bear) <- c("Streckkod", "Art", "Provtyp", "Lat", "Long", "Datum", "Analysprioritet", "Kommunnummer", "Kommun", "Lansnummer", "Lan")
 bear <- bear[bear$Lan %in% lan,]
 DNA <- DNA[!duplicated(DNA$Streckkod),]
