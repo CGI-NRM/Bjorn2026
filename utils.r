@@ -5,6 +5,11 @@
 #' @param sheet which sheet to import
 #' @param pattern regexp that matches filenames to be imported
 #' @export
+
+dir = "Bjorn2026/Data"
+sheet = 1
+pattern = "*_SEP.xlsx"
+
 ExcelToDF <- function(dir = ".", sheet = 1, pattern = ".xlsx") {
     filenames <- list.files(path = dir,
                             pattern = pattern,
@@ -18,13 +23,14 @@ ExcelToDF <- function(dir = ".", sheet = 1, pattern = ".xlsx") {
         df.list <- lapply(filenames,
                           function(x) read_excel(path  = x,
                                                  sheet = sheet))
-        if (length(unique(lapply(df.list, function(x) names(x)))) != 1) {
+        dfListTrim <- lapply(df.list, `[`, 1:4)
+        if (length(unique(lapply(dfListTrim, function(x) names(x)))) != 1) {
             cat("The excel files can not be merged as they are
                  not the same format. The following files are
                  selected based on your pattern:\n")
             return(filenames)
         } else { dfAll <- Reduce(function(x, y) merge(x, y, all = TRUE),
-                                 df.list)
+                                 dfListTrim)
         return(dfAll)
         }
     }
